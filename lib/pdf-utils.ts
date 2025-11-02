@@ -29,13 +29,11 @@ export async function splitPDF(
       (_, i) => range.start + i - 1
     );
     
-    // Copy pages in batches for better performance
     const pages = await newPdf.copyPages(pdf, pageIndices);
     pages.forEach((page) => newPdf.addPage(page));
     
-    // Use compression for smaller file sizes
     const pdfBytes = await newPdf.save({
-      useObjectStreams: false, // Better compatibility
+      useObjectStreams: false, 
     });
     splitPdfs.push(pdfBytes);
   }
@@ -49,7 +47,6 @@ export async function splitPDFIntoIndividual(file: File): Promise<Uint8Array[]> 
   const pageCount = pdf.getPageCount();
   const splitPdfs: Uint8Array[] = [];
 
-  // Process in chunks to avoid memory issues
   const chunkSize = 10;
   for (let i = 0; i < pageCount; i += chunkSize) {
     const end = Math.min(i + chunkSize, pageCount);
@@ -65,7 +62,6 @@ export async function splitPDFIntoIndividual(file: File): Promise<Uint8Array[]> 
       splitPdfs.push(pdfBytes);
     }
     
-    // Allow garbage collection between chunks
     if (end < pageCount) {
       await new Promise(resolve => setTimeout(resolve, 0));
     }
@@ -90,7 +86,8 @@ export async function getPDFPageCount(file: File): Promise<number> {
 
 export function downloadPDF(pdfBytes: Uint8Array, filename: string) {
   try {
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const safeBytes = new Uint8Array(pdfBytes);
+    const blob = new Blob([safeBytes], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -99,7 +96,6 @@ export function downloadPDF(pdfBytes: Uint8Array, filename: string) {
     document.body.appendChild(a);
     a.click();
     
-    // Cleanup with a delay to ensure download starts
     setTimeout(() => {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
@@ -110,17 +106,13 @@ export function downloadPDF(pdfBytes: Uint8Array, filename: string) {
   }
 }
 
-// Helper function to estimate memory usage
 export function estimatePDFMemoryUsage(fileSize: number, pageCount: number): number {
-  // Rough estimate: file size * 3 (for processing overhead)
-  return (fileSize * 3) / (1024 * 1024); // Return in MB
+  return (fileSize * 3) / (1024 * 1024);
 }
 
-// Check if browser can handle the PDF size
 export function canHandlePDFSize(fileSize: number): boolean {
   const fileSizeMB = fileSize / (1024 * 1024);
   
-  // Conservative limits for browser processing
   if (fileSizeMB > 100) return false;
   if (fileSizeMB > 50) {
     console.warn('Large PDF file. Processing may be slow.');

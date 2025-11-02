@@ -39,17 +39,17 @@ export default function FileUpload({
           disabled
             ? 'cursor-not-allowed opacity-50 border-gray-200'
             : isDragActive
-            ? 'border-blue-500 bg-blue-50 cursor-pointer'
+            ? 'border-black bg-gray-50 cursor-pointer'
             : 'border-gray-300 hover:border-gray-400 cursor-pointer'
         }`}
     >
       <input {...getInputProps()} />
       <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
       {isDragActive ? (
-        <p className="text-lg text-blue-600">Drop the PDF files here...</p>
+        <p className="text-lg text-black font-medium">Drop the PDF files here...</p>
       ) : (
         <div>
-          <p className="text-lg mb-2 font-medium">
+          <p className="text-lg mb-2 font-medium text-gray-900">
             {multiple ? 'Drag & drop PDF files here' : 'Drag & drop a PDF file here'}
           </p>
           <p className="text-sm text-gray-500">or click to select {multiple ? 'files' : 'file'}</p>

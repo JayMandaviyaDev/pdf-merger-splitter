@@ -82,12 +82,12 @@ export default function PDFMerger() {
       {files.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold">
+            <h3 className="text-lg font-semibold text-gray-900">
               Files to Merge ({files.length})
             </h3>
             <button
               onClick={() => setFiles([])}
-              className="text-sm text-red-600 hover:text-red-700"
+              className="text-sm text-gray-600 hover:text-black font-medium"
             >
               Clear All
             </button>
@@ -106,7 +106,7 @@ export default function PDFMerger() {
                 }`}
               >
                 <GripVertical className="h-5 w-5 text-gray-400" />
-                <FileText className="h-8 w-8 text-red-500 flex-shrink-0" />
+                <FileText className="h-8 w-8 text-black flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <p className="font-medium truncate">{file.name}</p>
                   <p className="text-sm text-gray-500">
@@ -115,7 +115,7 @@ export default function PDFMerger() {
                 </div>
                 <button
                   onClick={() => removeFile(file.id)}
-                  className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded"
+                  className="p-2 text-gray-400 hover:text-black hover:bg-gray-100 rounded"
                   disabled={loading}
                 >
                   <X className="h-5 w-5" />
@@ -127,7 +127,7 @@ export default function PDFMerger() {
           <button
             onClick={handleMerge}
             disabled={loading || files.length < 2}
-            className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-colors"
+            className="w-full py-3 px-4 bg-black text-white rounded-lg font-medium hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-colors"
           >
             {loading ? (
               <>
